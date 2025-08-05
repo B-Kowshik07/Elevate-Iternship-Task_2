@@ -1,13 +1,27 @@
-
-
 todo_list = []
+filename = "tasks.txt"
+
+def load_tasks():
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                todo_list.append(line.strip())
+    except FileNotFoundError:
+        pass
+
+def save_tasks():
+    with open(filename, "w") as file:
+        for task in todo_list:
+            file.write(task + "\n")
 
 def show_menu():
-    print("\n======To-Do List Menu:========")
+    print("\n====== To-Do List Menu ======")
     print("1. Add Task")
     print("2. View Tasks")
     print("3. Remove Task")
     print("4. Exit")
+
+load_tasks() 
 
 while True:
     show_menu()
@@ -16,6 +30,7 @@ while True:
     if choice == "1":
         task = input("Enter the task: ")
         todo_list.append(task)
+        save_tasks() 
         print("Task added.")
 
     elif choice == "2":
@@ -36,15 +51,16 @@ while True:
                 remove_idx = int(input("Enter task number to remove: ")) - 1
                 if 0 <= remove_idx < len(todo_list):
                     removed = todo_list.pop(remove_idx)
-                    print(f"Removed task : {removed}")
+                    save_tasks()  
+                    print(f"Removed task: {removed}")
                 else:
                     print("Invalid task number.")
             except ValueError:
                 print("Please enter a valid number.")
 
     elif choice == "4":
-        print("Exiting To-Do List. Goodbye!👋")
+        print("Exiting To-Do List. Goodbye! 👋")
         break
 
     else:
-        print("Invalid choice. Please enter a number from 1 to 4.")
+        print("Invalid choice, Please enter a number from 1 to 4.")
